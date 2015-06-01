@@ -14,17 +14,24 @@
     @RenderSection("head", required: false)
 
 </head>
-<body>
-    @RenderBody()
+    <body>
+        
+        <div class="row">
+            <div class="large-12 columns">
+                <h1>@ViewBag.Title <small>@ViewBag.SubTitle</small></h1>
+            </div>
+        </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/foundation")
+        @RenderBody()
 
-    <script>
-        $(document).foundation();
-    </script>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/foundation")
 
-    @RenderSection("scripts", required: false)
+        <script>
+            $(document).foundation();
+        </script>
 
-</body>
+        @RenderSection("scripts", required: false)
+
+    </body>
 </html>
