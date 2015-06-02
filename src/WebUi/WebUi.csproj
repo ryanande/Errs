@@ -154,13 +154,18 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
+    <Compile Include="Configurations.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Configurations.tt</DependentUpon>
+    </Compile>
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\HttpContextNestedContainerScope.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
-    <Compile Include="Features\Error\ErrorController.cs" />
+    <Compile Include="Features\Errors\ErrorsController.cs" />
     <Compile Include="Features\Home\ErrorsHandler.cs" />
     <Compile Include="Features\Home\ErrorsRequest.cs" />
     <Compile Include="Features\Home\ErrorsResponse.cs" />
@@ -205,7 +210,19 @@
     <Content Include="Features\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Features\Error\Index.cshtml" />
+    <Content Include="Features\Errors\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Configurations.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Configurations.cs</LastGenOutput>
+    </None>
+    <Content Include="Features\Errors\NotFound.cshtml" />
+    <Content Include="Features\Errors\_RecursiveException.cshtml" />
+    <Content Include="Features\Errors\NotAuthorized.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

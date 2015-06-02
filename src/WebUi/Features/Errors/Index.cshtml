@@ -1,4 +1,7 @@
-﻿@{
+﻿@model HandleErrorInfo
+@{
     ViewBag.Title = "Oops! Err!";
     ViewBag.SubTitle = "Application Exceptions";
 }
+
+@Html.RenderPartial("_RecursiveException", Model)

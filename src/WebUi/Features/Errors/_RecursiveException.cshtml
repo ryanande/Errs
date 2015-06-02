@@ -1,0 +1,19 @@
+﻿@model HandleErrorInfo
+
+@if (Model != null && Model.Exception != null)
+{ 
+    @ExceptionFormat(Model.Exception)
+}
+
+
+@helper ExceptionFormat(Exception ex)
+{
+    if (ex.InnerException != null)
+    {
+        ExceptionFormat(ex.InnerException)
+    }
+
+    <h3>@Model.Exception.Message</h3>
+
+    @Model.Exception.StackTrace
+}

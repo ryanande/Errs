@@ -2,21 +2,21 @@
 {
     using System.Web.Mvc;
 
-    public class ErrorController : BaseController
+    public class ErrorsController : BaseController
     {
 
         public ActionResult Index()
         {
-            return View();
+            return View(ViewData.Model);
         }
 
         public ActionResult NotFound()
         {
-            return View();
+            return View(ViewData.Model);
         }
         public ActionResult NotAuthorized()
         {
-            return View();
+            return View(ViewData.Model);
         }
     }
 }

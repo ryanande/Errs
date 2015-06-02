@@ -6,6 +6,7 @@
     using System.Web.Optimization;
     using System.Web.Routing;
     using Features.Errors;
+    using Features.Shared;
     using Infrastructure;
 
     public class Global : HttpApplication
@@ -60,7 +61,7 @@
             }
 
             var ex = Server.GetLastError();
-            var controller = new ErrorController();
+            var controller = new ErrorsController();
             var routeData = new RouteData();
             var action = "Index";
 
@@ -77,18 +78,22 @@
                     case 403 :
                         action = "NotAuthorized";
                         break;
+                    default :
+                        action = "Index";
+                        break;
                 }
             }
-
+            
             httpContext.ClearError();
             httpContext.Response.Clear();
             httpContext.Response.StatusCode = ex is HttpException ? ((HttpException)ex).GetHttpCode() : 500;
             httpContext.Response.TrySkipIisCustomErrors = true;
+            var isAjaxRequest = httpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
 
             routeData.Values["controller"] = "Error";
             routeData.Values["action"] = action;
 
-            controller.ViewData.Model = new HandleErrorInfo(ex, currentController, currentAction);
+            controller.ViewData.Model = new ErrorInfo(ex, currentController, currentAction, isAjaxRequest);
             ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
 
         }

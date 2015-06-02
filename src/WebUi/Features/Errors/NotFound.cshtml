@@ -1,0 +1,7 @@
+﻿@model HandleErrorInfo
+@{
+    ViewBag.Title = "404!";
+    ViewBag.SubTitle = "Page Not Found";
+}
+
+@Html.RenderPartial("_RecursiveException", Model)

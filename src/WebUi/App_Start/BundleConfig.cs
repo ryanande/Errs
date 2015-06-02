@@ -12,7 +12,7 @@ namespace Errs.WebUi
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                 "~/Scripts/jquery.validate*"));
 
-            bundles.Add(new StyleBundle("~/bundle/css").Include(
+            bundles.Add(new StyleBundle("~/bundles/css").Include(
                 "~/Content/app.css"));
 
             bundles.Add(Foundation.Styles());
