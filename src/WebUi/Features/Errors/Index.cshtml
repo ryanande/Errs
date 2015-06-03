@@ -1,7 +1,7 @@
-﻿@model HandleErrorInfo
+﻿@model Errs.WebUi.Features.Shared.ErrorInfo
 @{
     ViewBag.Title = "Oops! Err!";
     ViewBag.SubTitle = "Application Exceptions";
 }
 
-@Html.RenderPartial("_RecursiveException", Model)
+@{ Html.RenderPartial("_RecursiveException", Model); }

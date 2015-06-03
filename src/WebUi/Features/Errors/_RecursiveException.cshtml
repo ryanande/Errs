@@ -1,19 +1,22 @@
-﻿@model HandleErrorInfo
+﻿@model Errs.WebUi.Features.Shared.ErrorInfo
+
 
 @if (Model != null && Model.Exception != null)
-{ 
+{
     @ExceptionFormat(Model.Exception)
 }
 
-
 @helper ExceptionFormat(Exception ex)
 {
-    if (ex.InnerException != null)
-    {
-        ExceptionFormat(ex.InnerException)
-    }
+    <div class="panel panel-danger">
+        <div class="panel-heading">@ex.Message</div>
+        <div class="panel-body">
+            <small>@ex.StackTrace</small>
 
-    <h3>@Model.Exception.Message</h3>
-
-    @Model.Exception.StackTrace
+            @if (ex.InnerException != null)
+            {
+                @ExceptionFormat(ex.InnerException)
+            }
+        </div>
+    </div>
 }

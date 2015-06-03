@@ -29,5 +29,9 @@
         {
             throw new Exception("Fall down go Boom!");
         }
+        public ActionResult FiveHundyNested()
+        {
+            throw new Exception("Fall down go Boom!", new Exception("Our little inner exception!"));
+        }
     }
 }

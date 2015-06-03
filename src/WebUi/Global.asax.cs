@@ -90,12 +90,13 @@
             httpContext.Response.TrySkipIisCustomErrors = true;
             var isAjaxRequest = httpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
 
-            routeData.Values["controller"] = "Error";
+            routeData.Values["controller"] = "Errors";
             routeData.Values["action"] = action;
 
             controller.ViewData.Model = new ErrorInfo(ex, currentController, currentAction, isAjaxRequest);
             ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
-
+    
+            Response.End();
         }
 
         protected void Session_End(object sender, EventArgs e)

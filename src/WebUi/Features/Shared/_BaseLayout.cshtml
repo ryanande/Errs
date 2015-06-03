@@ -7,31 +7,27 @@
 
     <title>@ViewBag.Title - Welcome Test City</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    
-    @Styles.Render("~/Content/foundation/css")
+
     @Styles.Render("~/bundles/css")
 
     @RenderSection("head", required: false)
 
 </head>
-    <body>
-        
+<body>
+
+    <div class="container">
         <div class="row">
-            <div class="large-12 columns">
+            <div class="col-md-8">
                 <h1>@ViewBag.Title <small>@ViewBag.SubTitle</small></h1>
             </div>
         </div>
+        <div class="row">
+            @RenderBody()
+        </div>
+    </div>
 
-        @RenderBody()
+    @Scripts.Render("~/js")
+    @RenderSection("scripts", required: false)
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/foundation")
-
-        <script>
-            $(document).foundation();
-        </script>
-
-        @RenderSection("scripts", required: false)
-
-    </body>
+</body>
 </html>
