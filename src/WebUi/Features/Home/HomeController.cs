@@ -31,7 +31,17 @@
         }
         public ActionResult FiveHundyNested()
         {
-            throw new Exception("Fall down go Boom!", new Exception("Our little inner exception!"));
+            try
+            {
+                var a = 1;
+                var b = 0;
+                var c = a / b;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("Fall down go Boom!", ex);
+            }
+            return View();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿@model Errs.WebUi.Features.Shared.ErrorInfo
 
-
 @if (Model != null && Model.Exception != null)
 {
     @ExceptionFormat(Model.Exception)
@@ -8,15 +7,25 @@
 
 @helper ExceptionFormat(Exception ex)
 {
-    <div class="panel panel-danger">
-        <div class="panel-heading">@ex.Message</div>
-        <div class="panel-body">
-            <small>@ex.StackTrace</small>
+    var accordianId = Guid.NewGuid();
+    var panelId = Guid.NewGuid();
 
-            @if (ex.InnerException != null)
-            {
-                @ExceptionFormat(ex.InnerException)
-            }
+    <div class="panel-group" id="@accordianId">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <a data-toggle="collapse" data-parent="#@accordianId" href="#@panelId">
+                    <strong>@ex.Message</strong>
+                </a>
+            </div>
+            <div id="@panelId" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <small>@ex.StackTrace</small>
+                    @if (ex.InnerException != null)
+                    {
+                        @ExceptionFormat(ex.InnerException)
+                    }
+                </div>
+            </div>
         </div>
     </div>
 }

@@ -132,6 +132,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Features\Errors\Forbidden.cshtml" />
     <None Include="scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
@@ -215,7 +216,7 @@
     </None>
     <Content Include="Features\Errors\NotFound.cshtml" />
     <Content Include="Features\Errors\_RecursiveException.cshtml" />
-    <Content Include="Features\Errors\NotAuthorized.cshtml" />
+    <Content Include="Features\Errors\UnAuthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -4,4 +4,5 @@
     ViewBag.SubTitle = "Page Not Found";
 }
 
-@Html.RenderPartial("_RecursiveException", Model)
+<p>The Page you requested could not be found.</p>
+<p>Navigte <a href="#">back </a> or return to the @Html.ActionLink("home page", "Index", "Home").</p>

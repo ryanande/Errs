@@ -65,6 +65,8 @@
             var routeData = new RouteData();
             var action = "Index";
 
+            int statusCode = ex.GetType() == typeof(HttpException) ? ((HttpException)ex).GetHttpCode() : 500;
+
             if (ex is HttpException)
             {
                 var httpException = ex as HttpException;
@@ -74,9 +76,11 @@
                     case 404 :
                         action = "NotFound";
                         break;
-                    case 401 :
+                    case 401:
+                        action = "UnAuthorized";
+                        break;
                     case 403 :
-                        action = "NotAuthorized";
+                        action = "Forbidden";
                         break;
                     default :
                         action = "Index";
@@ -93,7 +97,7 @@
             routeData.Values["controller"] = "Errors";
             routeData.Values["action"] = action;
 
-            controller.ViewData.Model = new ErrorInfo(ex, currentController, currentAction, isAjaxRequest);
+            controller.ViewData.Model = new ErrorInfo(ex, currentController, currentAction, statusCode, isAjaxRequest);
             ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
     
             Response.End();
