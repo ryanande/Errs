@@ -8,6 +8,7 @@
     using Features.Errors;
     using Features.Shared;
     using Infrastructure;
+    using Serilog;
 
     public class Global : HttpApplication
     {
@@ -16,6 +17,11 @@
 
         protected void Application_Start(object sender, EventArgs e)
         {
+            var logging = new LogConfig(new ConnectionStrings(), new Configurations());
+            logging.Initialize();
+
+            Log.Information("Application_Start Begin");
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
@@ -23,6 +29,8 @@
 
             BundleTable.EnableOptimizations = true; 
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            Log.Information("Application_Start End");
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -64,6 +72,9 @@
             var controller = new ErrorsController();
             var routeData = new RouteData();
             var action = "Index";
+
+
+            Log.Error(ex.Message, ex);
 
             int statusCode = ex.GetType() == typeof(HttpException) ? ((HttpException)ex).GetHttpCode() : 500;
 

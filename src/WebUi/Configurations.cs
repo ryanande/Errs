@@ -19,6 +19,10 @@ namespace Errs.WebUi
 
         bool UnobtrusiveJavaScriptEnabled { get; }
 
+        string LogTableName { get; }
+
+        string LogLevel { get; }
+
     }
 
     public class Configurations : IConfigurations
@@ -26,6 +30,10 @@ namespace Errs.WebUi
         private static readonly Lazy<bool> _clientValidationEnabled = new Lazy<bool>(() => Convert.ToBoolean(GetSetting("ClientValidationEnabled")));
 
         private static readonly Lazy<bool> _unobtrusiveJavaScriptEnabled = new Lazy<bool>(() => Convert.ToBoolean(GetSetting("UnobtrusiveJavaScriptEnabled")));
+
+        private static readonly Lazy<string> _logTableName = new Lazy<string>(() => GetSetting("LogTableName"));
+
+        private static readonly Lazy<string> _logLevel = new Lazy<string>(() => GetSetting("LogLevel"));
 
 
         public virtual bool ClientValidationEnabled 
@@ -44,6 +52,22 @@ namespace Errs.WebUi
             }
         }
 
+        public virtual string LogTableName 
+        {
+            get 
+            {
+                return _logTableName.Value;
+            }
+        }
+
+        public virtual string LogLevel 
+        {
+            get 
+            {
+                return _logLevel.Value;
+            }
+        }
+
 
         public static string GetSetting(string key)
         {
@@ -54,11 +78,15 @@ namespace Errs.WebUi
     public interface IConnectionStrings
     {
         string LocalSqlServer { get; }
+
+        string LoggingDb { get; }
     }
 
     public class ConnectionStrings : IConnectionStrings
     {
         private static readonly Lazy<string> _localSqlServer = new Lazy<string>(() => ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString); 
+
+        private static readonly Lazy<string> _loggingDb = new Lazy<string>(() => ConfigurationManager.ConnectionStrings["LoggingDb"].ConnectionString); 
 
 
         public virtual string LocalSqlServer 
@@ -66,6 +94,14 @@ namespace Errs.WebUi
             get 
             {
                 return _localSqlServer.Value;
+            }
+        }
+
+        public virtual string LoggingDb 
+        {
+            get 
+            {
+                return _loggingDb.Value;
             }
         }
     }
