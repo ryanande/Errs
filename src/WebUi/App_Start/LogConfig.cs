@@ -18,15 +18,10 @@
 
         public void Initialize()
         {
-            LogEventLevel logLevel;
-            if (!Enum.TryParse(_configurations.LogLevel, out logLevel))
-            {
-                logLevel = LogEventLevel.Debug;
-            }
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Trace(outputTemplate: "{Timestamp} [{Level}] ({HttpRequestId}|{UserName}) {Message}{NewLine}{Exception}")
-                .WriteTo.MSSqlServer(_connectionStrings.LoggingDb, _configurations.LogTableName, true, logLevel)
+                .WriteTo.MSSqlServer(_connectionStrings.LoggingDb, _configurations.LogTableName)
                 .Enrich.With<HttpRequestIdEnricher>()
                 .Enrich.With<HttpSessionIdEnricher>()
                 .Enrich.With<HttpRequestUrlEnricher>()
