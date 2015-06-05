@@ -19,20 +19,20 @@
 
         public TResponse Handle(TRequest message)
         {
-            var requestLog = Log.ForContext("Request:", message);
+            var requestLog = Log.ForContext<TRequest>();
+            //requestLog.Debug("Request Object: {message}", message);
 
+            requestLog.Debug("Validating Request");
             var failures = _messageValidator.Validate(message);
-
-            requestLog.Information("Validating Request");
             if (failures.Any())
             {
-                requestLog.Information("Failed Validation");
+                requestLog.Debug("Failed Validation: {failures}", failures);
                 throw new ValidationException(failures);
             }
 
-            requestLog.Information("Begin Handle Request");
+            requestLog.Debug("Begin Handle Request");
             var result = _inner.Handle(message);
-            requestLog.Information("Request Complete");
+            requestLog.Debug("Request Complete");
 
             return result;
         }

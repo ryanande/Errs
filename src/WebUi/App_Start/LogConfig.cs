@@ -1,6 +1,7 @@
 ﻿namespace Errs.WebUi
 {
     using Serilog;
+    using SerilogWeb.Classic;
     using SerilogWeb.Classic.Enrichers;
 
     public class LogConfig
@@ -16,7 +17,6 @@
 
         public void Initialize()
         {
-
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Trace(outputTemplate: "{Timestamp} [{Level}] ({HttpRequestId}|{UserName}) {Message}{NewLine}{Exception}")
                 .WriteTo.MSSqlServer(_connectionStrings.LoggingDb, _configurations.LogTableName)
@@ -24,7 +24,10 @@
                 .Enrich.With<HttpSessionIdEnricher>()
                 .Enrich.With<HttpRequestUrlEnricher>()
                 .Enrich.With(new UserNameEnricher("anonymous", System.Environment.UserName))
+                .ReadFrom.AppSettings()
                 .CreateLogger();
+
+            ApplicationLifecycleModule.DebugLogPostedFormData = true;
         }
     }
 }

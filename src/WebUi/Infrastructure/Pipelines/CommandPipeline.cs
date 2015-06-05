@@ -20,19 +20,20 @@
         protected override void HandleCore(TRequest message)
         {
             var commandLog = Log.ForContext("Command:", message);
-            commandLog.Information("Validating Command");
+            commandLog.Debug("Command Object: {message}", message);
 
+            commandLog.Debug("Validating Command");
             var failures = _validator.Validate(message);
 
             if (failures.Any())
             {
-                commandLog.Information("Failed Validation");
+                commandLog.Debug("Failed Validation");
                 throw new ValidationException(failures);
             }
 
-            commandLog.Information("Begin Handle Command");
+            commandLog.Debug("Begin Handle Command");
             _inner.Handle(message);
-            commandLog.Information("Command Complete");
+            commandLog.Debug("Command Complete");
         }
     }
 }
