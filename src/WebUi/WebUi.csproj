@@ -191,6 +191,8 @@
     <Compile Include="Infrastructure\DataAccess\StructuredLog.cs" />
     <Compile Include="Infrastructure\ExceptionManagement\ExceptionHandler.cs" />
     <Compile Include="Infrastructure\FeatureViewLocationRazorViewEngine.cs" />
+    <Compile Include="Infrastructure\Logging\ILogger.cs" />
+    <Compile Include="Infrastructure\Logging\Logger.cs" />
     <Compile Include="Infrastructure\Mapping\AutoMapperBootstrapper.cs" />
     <Compile Include="Infrastructure\Pipelines\BaseValidator.cs" />
     <Compile Include="Infrastructure\Pipelines\CommandPipeline.cs" />

@@ -17,6 +17,7 @@
 
 namespace Errs.WebUi.DependencyResolution
 {
+    using Infrastructure.Logging;
     using StructureMap.Configuration.DSL;
     using StructureMap.Graph;
 
@@ -35,7 +36,7 @@ namespace Errs.WebUi.DependencyResolution
                     scan.AssembliesFromApplicationBaseDirectory(a => a.FullName.Contains("Errs.WebUi"));
                     scan.LookForRegistries();
                 });
-            //For<IExample>().Use<Example>();
+            For<ILogger>().Singleton().Use<Logger>();
         }
         #endregion
     }

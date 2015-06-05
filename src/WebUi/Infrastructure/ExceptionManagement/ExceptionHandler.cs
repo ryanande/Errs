@@ -2,10 +2,18 @@
 {
     using System.Web;
     using System.Web.Mvc;
-    using Serilog;
+    using Logging;
 
     public class ExceptionHandler : HandleErrorAttribute
     {
+
+        private readonly ILogger _logger;
+
+        public ExceptionHandler(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         public override void OnException(ExceptionContext filterContext)
         {
             if (filterContext.ExceptionHandled || !filterContext.HttpContext.IsCustomErrorEnabled)
@@ -51,7 +59,7 @@
                 };
             }
 
-            Log.Error(filterContext.Exception.Message, filterContext.Exception);
+            _logger.Error(filterContext.Exception, filterContext.Exception.Message);
 
             filterContext.ExceptionHandled = true;
             filterContext.HttpContext.Response.Clear();
