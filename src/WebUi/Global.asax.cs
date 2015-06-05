@@ -51,9 +51,9 @@
         protected void Application_Error(object sender, EventArgs e)
         {
             var httpContext = ((HttpApplication)sender).Context;
+            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
             var currentController = " ";
             var currentAction = " ";
-            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
 
             if (currentRouteData != null)
             {
@@ -72,7 +72,6 @@
             var controller = new ErrorsController();
             var routeData = new RouteData();
             var action = "Index";
-
 
             Log.Error(ex.Message, ex);
 

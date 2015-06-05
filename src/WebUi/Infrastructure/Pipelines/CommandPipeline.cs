@@ -3,6 +3,7 @@
     using System.Linq;
     using FluentValidation;
     using MediatR;
+    using Serilog;
     using Validation;
 
     public class CommandPipeline<TRequest> : RequestHandler<TRequest> where TRequest : IRequest
@@ -18,14 +19,20 @@
 
         protected override void HandleCore(TRequest message)
         {
+            var commandLog = Log.ForContext("Command:", message);
+            commandLog.Information("Validating Command");
+
             var failures = _validator.Validate(message);
 
             if (failures.Any())
             {
+                commandLog.Information("Failed Validation");
                 throw new ValidationException(failures);
             }
 
+            commandLog.Information("Begin Handle Command");
             _inner.Handle(message);
+            commandLog.Information("Command Complete");
         }
     }
 }
