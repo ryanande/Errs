@@ -2,8 +2,8 @@
 {
     using System.Linq;
     using FluentValidation;
+    using Logging;
     using MediatR;
-    using Serilog;
     using Validation;
 
     public class RequestPipeline<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
@@ -22,7 +22,6 @@
         public TResponse Handle(TRequest message)
         {
             var requestLog = _logger.ForContext<TRequest>();
-            //requestLog.Debug("Request Object: {message}", message);
 
             requestLog.Debug("Validating Request");
             var failures = _messageValidator.Validate(message);

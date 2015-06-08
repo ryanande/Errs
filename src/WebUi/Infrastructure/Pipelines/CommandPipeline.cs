@@ -2,8 +2,8 @@
 {
     using System.Linq;
     using FluentValidation;
+    using Logging;
     using MediatR;
-    using Serilog;
     using Validation;
 
     public class CommandPipeline<TRequest> : RequestHandler<TRequest> where TRequest : IRequest
