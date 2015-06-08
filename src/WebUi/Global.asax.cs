@@ -6,7 +6,9 @@
     using System.Web.Optimization;
     using System.Web.Routing;
     using Features.Errors;
+    using Features.Shared;
     using Infrastructure;
+    using Serilog;
 
     public class Global : HttpApplication
     {
@@ -15,6 +17,11 @@
 
         protected void Application_Start(object sender, EventArgs e)
         {
+            var logging = new LogConfig(new ConnectionStrings(), new Configurations());
+            logging.Initialize();
+
+            Log.Information("Application_Start Begin");
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
@@ -22,6 +29,8 @@
 
             BundleTable.EnableOptimizations = true; 
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            Log.Information("Application_Start End");
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -42,9 +51,9 @@
         protected void Application_Error(object sender, EventArgs e)
         {
             var httpContext = ((HttpApplication)sender).Context;
+            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
             var currentController = " ";
             var currentAction = " ";
-            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
 
             if (currentRouteData != null)
             {
@@ -60,9 +69,13 @@
             }
 
             var ex = Server.GetLastError();
-            var controller = new ErrorController();
+            var controller = new ErrorsController();
             var routeData = new RouteData();
             var action = "Index";
+
+            Log.Error(ex.Message, ex);
+
+            int statusCode = ex.GetType() == typeof(HttpException) ? ((HttpException)ex).GetHttpCode() : 500;
 
             if (ex is HttpException)
             {
@@ -73,24 +86,31 @@
                     case 404 :
                         action = "NotFound";
                         break;
-                    case 401 :
+                    case 401:
+                        action = "UnAuthorized";
+                        break;
                     case 403 :
-                        action = "NotAuthorized";
+                        action = "Forbidden";
+                        break;
+                    default :
+                        action = "Index";
                         break;
                 }
             }
-
+            
             httpContext.ClearError();
             httpContext.Response.Clear();
             httpContext.Response.StatusCode = ex is HttpException ? ((HttpException)ex).GetHttpCode() : 500;
             httpContext.Response.TrySkipIisCustomErrors = true;
+            var isAjaxRequest = httpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
 
-            routeData.Values["controller"] = "Error";
+            routeData.Values["controller"] = "Errors";
             routeData.Values["action"] = action;
 
-            controller.ViewData.Model = new HandleErrorInfo(ex, currentController, currentAction);
+            controller.ViewData.Model = new ErrorInfo(ex, currentController, currentAction, statusCode, isAjaxRequest);
             ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
-
+    
+            Response.End();
         }
 
         protected void Session_End(object sender, EventArgs e)

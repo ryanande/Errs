@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using FluentValidation;
+    using Logging;
     using MediatR;
     using Validation;
 
@@ -9,23 +10,30 @@
     {
         private readonly IRequestHandler<TRequest, TResponse> _inner;
         private readonly IMessageValidator<TRequest> _messageValidator;
+        private readonly ILogger _logger;
 
-        public RequestPipeline(IRequestHandler<TRequest, TResponse> inner, IMessageValidator<TRequest> messageValidator)
+        public RequestPipeline(IRequestHandler<TRequest, TResponse> inner, IMessageValidator<TRequest> messageValidator, ILogger logger)
         {
             _inner = inner;
             _messageValidator = messageValidator;
+            _logger = logger;
         }
 
         public TResponse Handle(TRequest message)
         {
-            var failures = _messageValidator.Validate(message);
+            var requestLog = _logger.ForContext<TRequest>();
 
+            requestLog.Debug("Validating Request");
+            var failures = _messageValidator.Validate(message);
             if (failures.Any())
             {
+                requestLog.Debug("Failed Validation: {failures}", failures);
                 throw new ValidationException(failures);
             }
 
+            requestLog.Debug("Begin Handle Request");
             var result = _inner.Handle(message);
+            requestLog.Debug("Request Complete");
 
             return result;
         }

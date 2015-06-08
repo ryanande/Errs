@@ -1,77 +1,28 @@
 ﻿namespace Errs.WebUi.Features.Home
 {
-    using System;
     using System.Collections.Generic;
+    using Infrastructure.DataAccess;
     using MediatR;
+    using WebGrease.Css.Extensions;
 
     public class ErrorsHandler : IRequestHandler<ErrorsRequest, IEnumerable<ErrorsResponse>>
     {
         public IEnumerable<ErrorsResponse> Handle(ErrorsRequest message)
         {
-            // test
-            return new List<ErrorsResponse>
+            var table = new StructuredLog();
+            var list = new List<ErrorsResponse>();
+            table.All().ForEach(e => list.Add(new ErrorsResponse
             {
-                new ErrorsResponse
-                {
-                    Id = 1,
-                    Message = "Error Message",
-                    MessageTemplate = "Message Template",
-                    Exception = "exception",
-                    Level = "debug",
-                    Properties = "xml properties, need to deserialize",
-                    TimeStamp = DateTime.Now
-                },
-                new ErrorsResponse
-                {
-                    Id = 2,
-                    Message = "Error Message",
-                    MessageTemplate = "Message Template",
-                    Exception = "exception",
-                    Level = "debug",
-                    Properties = "xml properties, need to deserialize",
-                    TimeStamp = DateTime.Now
-                },
-                new ErrorsResponse
-                {
-                    Id = 3,
-                    Message = "Error Message",
-                    MessageTemplate = "Message Template",
-                    Exception = "exception",
-                    Level = "debug",
-                    Properties = "xml properties, need to deserialize",
-                    TimeStamp = DateTime.Now
-                },
-                new ErrorsResponse
-                {
-                    Id = 4,
-                    Message = "Error Message",
-                    MessageTemplate = "Message Template",
-                    Exception = "exception",
-                    Level = "debug",
-                    Properties = "xml properties, need to deserialize",
-                    TimeStamp = DateTime.Now
-                },
-                new ErrorsResponse
-                {
-                    Id = 5,
-                    Message = "Error Message",
-                    MessageTemplate = "Message Template",
-                    Exception = "exception",
-                    Level = "debug",
-                    Properties = "xml properties, need to deserialize",
-                    TimeStamp = DateTime.Now
-                },
-                new ErrorsResponse
-                {
-                    Id = 6,
-                    Message = "Error Message",
-                    MessageTemplate = "Message Template",
-                    Exception = "exception",
-                    Level = "debug",
-                    Properties = "xml properties, need to deserialize",
-                    TimeStamp = DateTime.Now
-                }
-            };
+                Id = e.Id,
+                Message = e.Message,
+                MessageTemplate = e.MessageTemplate,
+                Exception = e.Exception,
+                Level = e.Level,
+                Properties = e.Properties,
+                TimeStamp = e.TimeStamp
+            }));
+
+            return list;
         }
     }
 }

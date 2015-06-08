@@ -29,5 +29,19 @@
         {
             throw new Exception("Fall down go Boom!");
         }
+        public ActionResult FiveHundyNested()
+        {
+            try
+            {
+                var a = 1;
+                var b = 0;
+                var c = a / b;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("Fall down go Boom!", ex);
+            }
+            return View();
+        }
     }
 }

@@ -2,15 +2,17 @@
 {
     using System.Web;
     using System.Web.Mvc;
+    using Logging;
 
     public class ExceptionHandler : HandleErrorAttribute
     {
-        // private readonly ILog _logger;
 
-        // public ExceptionHandler()
-        // {
-        // _logger = LogManager.GetLogger("MyLogger");
-        // }
+        private readonly ILogger _logger;
+
+        public ExceptionHandler(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public override void OnException(ExceptionContext filterContext)
         {
@@ -57,8 +59,7 @@
                 };
             }
 
-            // log the error using log4net.
-            //_logger.Error(filterContext.Exception.Message, filterContext.Exception);
+            _logger.Error(filterContext.Exception, filterContext.Exception.Message);
 
             filterContext.ExceptionHandled = true;
             filterContext.HttpContext.Response.Clear();
