@@ -1,5 +1,6 @@
 ﻿namespace Errs.WebUi
 {
+    using Infrastructure.Logging;
     using Serilog;
     using SerilogWeb.Classic;
     using SerilogWeb.Classic.Enrichers;
@@ -23,6 +24,8 @@
                 .Enrich.With<HttpRequestIdEnricher>()
                 .Enrich.With<HttpSessionIdEnricher>()
                 .Enrich.With<HttpRequestUrlEnricher>()
+                .Enrich.With<HttpRequestTypeEnricher>()
+                .Enrich.With<ServerNameEnricher>()
                 .Enrich.With(new UserNameEnricher("anonymous", System.Environment.UserName))
                 .ReadFrom.AppSettings()
                 .CreateLogger();

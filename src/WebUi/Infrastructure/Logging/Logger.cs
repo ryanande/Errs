@@ -5,13 +5,11 @@
 
     public class Logger : ILogger
     {
-
         public ILogger ForContext(string propertyName, object value, bool destructureObjects = false)
         {
             return Log.ForContext(propertyName, value, destructureObjects) as ILogger; // no me gusta!
         }
-
-
+        
         public ILogger ForContext<TSource>()
         {
             return Log.ForContext<TSource>() as ILogger; // no me gusta!
