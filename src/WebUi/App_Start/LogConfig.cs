@@ -28,6 +28,7 @@
                 .Enrich.With<ServerNameEnricher>()
                 .Enrich.With(new UserNameEnricher("anonymous", System.Environment.UserName))
                 .ReadFrom.AppSettings()
+                .Enrich.FromLogContext()
                 .CreateLogger();
 
             ApplicationLifecycleModule.DebugLogPostedFormData = true;

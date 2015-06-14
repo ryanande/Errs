@@ -2,9 +2,10 @@
 {
     using System.Linq;
     using FluentValidation;
-    using Logging;
     using MediatR;
+    using Serilog;
     using Validation;
+    using ILogger = Logging.ILogger;
 
     public class RequestPipeline<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
@@ -21,21 +22,28 @@
 
         public TResponse Handle(TRequest message)
         {
-            _logger.ForContext<TRequest>();
+            // _logger.ForContext("Begin Handler: {0}", message);
+            var log = Log.ForContext<TRequest>();
 
-            _logger.Debug("Validating Request");
+            var str = "message: {@" + typeof (TRequest).Name + "}";
+            
+
+            log.Debug(str, message);
+
+            // _logger.Debug("Validating Request");
             var failures = _messageValidator.Validate(message);
             if (failures.Any())
             {
-                _logger.Debug("Failed Validation: {failures}", failures);
+                // _logger.Debug("Failed Validation: {failures}", failures);
+                log.Debug("Failed Validation: {failures}", failures);
                 throw new ValidationException(failures);
             }
 
-            _logger.Debug("Begin Handle Request");
+            log.Debug("Start Handle Request");
+            // _logger.Debug("Start Handle Request");
             var result = _inner.Handle(message);
-            _logger.Debug("Request Complete");
-
-            _logger.FlushContext();
+            // _logger.Debug("Request Complete");
+            log.Debug("Completed Handle Request");
 
             return result;
         }
