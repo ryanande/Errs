@@ -1,6 +1,7 @@
 ﻿namespace Errs.WebUi.Infrastructure.Pipelines
 {
     using System.Linq;
+    using System.Runtime.InteropServices;
     using FluentValidation;
     using MediatR;
     using Serilog;
@@ -22,28 +23,19 @@
 
         public TResponse Handle(TRequest message)
         {
-            // _logger.ForContext("Begin Handler: {0}", message);
-            var log = Log.ForContext<TRequest>();
+            var str = "Handler executing for command: {@" + typeof (TRequest).Name + "}";
+            _logger.Debug(str, message);
 
-            var str = "message: {@" + typeof (TRequest).Name + "}";
-            
-
-            log.Debug(str, message);
-
-            // _logger.Debug("Validating Request");
             var failures = _messageValidator.Validate(message);
             if (failures.Any())
             {
-                // _logger.Debug("Failed Validation: {failures}", failures);
-                log.Debug("Failed Validation: {failures}", failures);
+                _logger.Debug("Failed Validation: {@Failures}", failures);
                 throw new ValidationException(failures);
             }
 
-            log.Debug("Start Handle Request");
-            // _logger.Debug("Start Handle Request");
+            _logger.Debug("Calling Handle Request");
             var result = _inner.Handle(message);
-            // _logger.Debug("Request Complete");
-            log.Debug("Completed Handle Request");
+            _logger.Debug("Completed Handle Request");
 
             return result;
         }
