@@ -9,20 +9,9 @@
         public static Dictionary<string, string> GetProperties(this string data)
         {
             var doc = XDocument.Parse(data);
-            var dataDictionary = new Dictionary<string, string>();
-
-            foreach (XElement element in doc.Descendants().Where(p => p.HasElements == false))
-            {
-                int keyInt = 0;
-                string keyName = element.Name.LocalName;
-
-                while (dataDictionary.ContainsKey(keyName))
-                {
-                    keyName = element.FirstAttribute.Value; //.Name.LocalName + "_" + keyInt++;
-                }
-
-                dataDictionary.Add(keyName, element.Value);
-            }
+            var dataDictionary = doc.Descendants("property")
+                  .ToDictionary(d => (string)d.Attribute("key"),
+                                d => (string)d);
             return dataDictionary;
         }
     }
