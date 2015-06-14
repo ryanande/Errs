@@ -201,6 +201,7 @@
     <Compile Include="Infrastructure\Pipelines\RequestPipeline.cs" />
     <Compile Include="Infrastructure\Utility\ReflectionExtension.cs" />
     <Compile Include="Infrastructure\Utility\ReflectionHelper.cs" />
+    <Compile Include="Infrastructure\Utility\StringExtensions.cs" />
     <Compile Include="Infrastructure\Validation\FluentValidationMessageResourceProvider.cs" />
     <Compile Include="Infrastructure\Validation\FluentValidationMessageValidator.cs" />
     <Compile Include="Infrastructure\Validation\IMessageValidator.cs" />

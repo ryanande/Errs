@@ -21,19 +21,21 @@
 
         public TResponse Handle(TRequest message)
         {
-            var requestLog = _logger.ForContext<TRequest>();
+            _logger.ForContext<TRequest>();
 
-            requestLog.Debug("Validating Request");
+            _logger.Debug("Validating Request");
             var failures = _messageValidator.Validate(message);
             if (failures.Any())
             {
-                requestLog.Debug("Failed Validation: {failures}", failures);
+                _logger.Debug("Failed Validation: {failures}", failures);
                 throw new ValidationException(failures);
             }
 
-            requestLog.Debug("Begin Handle Request");
+            _logger.Debug("Begin Handle Request");
             var result = _inner.Handle(message);
-            requestLog.Debug("Request Complete");
+            _logger.Debug("Request Complete");
+
+            _logger.FlushContext();
 
             return result;
         }

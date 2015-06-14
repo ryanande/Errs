@@ -4,11 +4,13 @@ namespace Errs.WebUi.Infrastructure.Logging
 {
     public interface ILogger
     {
-        ILogger ForContext(string propertyName, object value, bool destructureObjects = false);
+        void ForContext(string propertyName, object value, bool destructureObjects = false);
 
-        ILogger ForContext<TSource>();
+        void ForContext<TSource>();
 
-        ILogger ForContext(Type source);
+        void ForContext(Type source);
+
+        void FlushContext();
 
         void Verbose(string messageTemplate, params object[] propertyValues);
 

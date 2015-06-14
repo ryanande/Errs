@@ -21,21 +21,23 @@
 
         protected override void HandleCore(TRequest message)
         {
-            var commandLog = _logger.ForContext("Command:", message);
-            commandLog.Debug("Command Object: {message}", message);
+            _logger.ForContext("Command:", message);
+            _logger.Debug("Command Object: {message}", message);
 
-            commandLog.Debug("Validating Command");
+            _logger.Debug("Validating Command");
             var failures = _validator.Validate(message);
 
             if (failures.Any())
             {
-                commandLog.Debug("Failed Validation");
+                _logger.Debug("Failed Validation");
                 throw new ValidationException(failures);
             }
 
-            commandLog.Debug("Begin Handle Command");
+            _logger.Debug("Begin Handle Command");
             _inner.Handle(message);
-            commandLog.Debug("Command Complete");
+            _logger.Debug("Command Complete");
+
+            _logger.FlushContext();
         }
     }
 }
